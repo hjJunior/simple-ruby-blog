@@ -1,5 +1,13 @@
 language: ruby
-before_install:
-  bundle lock --add-platform ruby
-  bundle lock --add-platform x86_64-linux
-  bin/rails db:migrate RAILS_ENV=test
+env:
+- DB=sqlite
+- DB=mysql
+- DB=postgresql
+script:
+- RAILS_ENV=test bundle exec rake db:migrate --trace
+- bundle exec rake db:test:prepare
+- bundle exec rspec spec/
+before_script:
+- mysql -e 'create database my_app_test'
+- psql -c 'create database my_app_test' -U postgres
+bundler_args: --binstubs=./bundler_stubs
