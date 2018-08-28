@@ -2,3 +2,4 @@ language: ruby
 before_install:
   bundle lock --add-platform ruby
   bundle lock --add-platform x86_64-linux
+  bundle exec rake test:prepare
